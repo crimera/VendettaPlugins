@@ -1,0 +1,14 @@
+{
+    "name": "Stash",
+    "description": "Automatically open links from stash",
+    "authors": [
+        {
+            "name": "crimera",
+            "id": "481929326477180953"
+        }
+    ],
+    "main": "src/index.ts",
+    "vendetta": {
+        "icon": "ic_badge_staff"
+    }
+}
