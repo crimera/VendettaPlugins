@@ -2,21 +2,20 @@
 // https://github.com/castdrian/vendetta-plugins/blob/main/plugins/favorite-gifs/src/index.tsx#L22
 // https://github.com/Gabe616/VendettaPlugins/blob/main/plugins/message-markdown-preview/src/stuff/openPreview.tsx - dialog
 // https://github.com/aeongdesu/vdplugins/blob/7e2374f1db305e616b0e04fb248d6b962db8b30a/plugins/UserBG/src/fetchDB.ts#L4 - for fetching
+import { findByProps } from '@vendetta/metro';
+import { React, ReactNative } from '@vendetta/metro/common';
+import { after, before } from '@vendetta/patcher';
+import { showConfirmationAlert } from '@vendetta/ui/alerts';
+import { Forms, General } from '@vendetta/ui/components';
 
-import { logger } from "@vendetta";
-import { findByProps } from "@vendetta/metro";
-import { React } from "@vendetta/metro/common";
-import { after, before } from "@vendetta/patcher";
-import { showConfirmationAlert } from "@vendetta/ui/alerts";
-import { Forms } from "@vendetta/ui/components";
-import { showToast } from "@vendetta/ui/toasts";
+import { Link, SimpleText } from '../src/types';
 
 let patches = []
 
 const STASH_URL = "https://links.asmr-stash.org/"
 const ActionSheet = findByProps("openLazy", "hideActionSheet");
-const Router = findByProps('transitionToGuild', 'openURL');
-const { FormRow, FormIcon, FormText } = Forms
+const { FormRow } = Forms
+const { ScrollView, Text } = General
 
 const patch = before("openLazy", ActionSheet, (ctx) => {
   const [component, args, actionMessage] = ctx
@@ -43,36 +42,40 @@ const patch = before("openLazy", ActionSheet, (ctx) => {
             ActionSheet.hideActionSheet()
           }}
         />)
-
-
     })
   })
 })
 
 function showLinks(links: string) {
   const children = []
-  links.split("\n").forEach((link, i) => {
-    if (!link) return
-    if (link.startsWith("http")) {
-      children.push(
-        <FormRow
-          label={link}
-          onPress={() =>
-            Router.openURL(link)
-          } />
-      )
-    } else {
-      children.push(
-        <FormText>{link}</FormText>
-      )
-    }
-  })
+  let urlRegex = /https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()!@:%_\+.~#?&\/\/=]*)/gm
+  let data = links
+
+  let result
+  let index = 0
+  while (result = urlRegex.exec(data)) {
+    children.push(
+      <SimpleText>{data.slice(index, result.index)}</SimpleText>
+    )
+    children.push(
+      <Link text={result?.[0]}></Link>
+    )
+    index = urlRegex.lastIndex
+  }
 
   showConfirmationAlert({
     title: "links",
     // @ts-ignore
     children: (
-      children
+      <ScrollView
+        style={{
+          marginVertical: 12,
+          maxHeight: ReactNative.Dimensions.get("window").height * 0.7,
+        }}>
+        <Text>
+          {children}
+        </Text>
+      </ScrollView>
     )
   })
 }
