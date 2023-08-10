@@ -2,6 +2,7 @@
 // https://github.com/castdrian/vendetta-plugins/blob/main/plugins/favorite-gifs/src/index.tsx#L22
 // https://github.com/Gabe616/VendettaPlugins/blob/main/plugins/message-markdown-preview/src/stuff/openPreview.tsx - dialog
 // https://github.com/aeongdesu/vdplugins/blob/7e2374f1db305e616b0e04fb248d6b962db8b30a/plugins/UserBG/src/fetchDB.ts#L4 - for fetching
+// https://ihateregex.io/expr/url/ - regex
 import { findByProps } from '@vendetta/metro';
 import { React, ReactNative } from '@vendetta/metro/common';
 import { after, before } from '@vendetta/patcher';
