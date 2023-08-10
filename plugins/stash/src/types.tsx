@@ -12,7 +12,7 @@ const { Text } = General
 export function Link({ text }: React.PropsWithChildren<{ text: string }>) {
     return (
         <SimpleText
-            color="blue"
+            color="#049ce6"
             onPress={() => Router.openURL(text)}>
             {text}
         </SimpleText>
