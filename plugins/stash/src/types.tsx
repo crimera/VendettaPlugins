@@ -35,7 +35,6 @@ export function SimpleText({
                 TextStyleSheet["text-md/normal"],
                 { color: color ? color : rawColors.PRIMARY_100 },
             ]}
-            selectable={true}
             onPress={onPress}
         >
             {getChildren?.() ?? children}

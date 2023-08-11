@@ -3,6 +3,7 @@
 // https://github.com/Gabe616/VendettaPlugins/blob/main/plugins/message-markdown-preview/src/stuff/openPreview.tsx - dialog
 // https://github.com/aeongdesu/vdplugins/blob/7e2374f1db305e616b0e04fb248d6b962db8b30a/plugins/UserBG/src/fetchDB.ts#L4 - for fetching
 // https://ihateregex.io/expr/url/ - regex
+
 import { findByProps } from '@vendetta/metro';
 import { React, ReactNative } from '@vendetta/metro/common';
 import { after, before } from '@vendetta/patcher';
@@ -52,7 +53,7 @@ function showLinks(links: string) {
   let urlRegex = /https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()!@:%_\+.~#?&\/\/=]*)/gm
   let data = links
 
-  let result
+  let result: RegExpExecArray 
   let index = 0
   while (result = urlRegex.exec(data)) {
     children.push(
@@ -73,7 +74,9 @@ function showLinks(links: string) {
           marginVertical: 12,
           maxHeight: ReactNative.Dimensions.get("window").height * 0.7,
         }}>
-        <Text>
+        <Text
+            selectable={true}
+        >
           {children}
         </Text>
       </ScrollView>
