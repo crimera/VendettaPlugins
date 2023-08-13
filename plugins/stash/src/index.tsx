@@ -11,6 +11,7 @@ import { showConfirmationAlert } from '@vendetta/ui/alerts';
 import { Forms, General } from '@vendetta/ui/components';
 
 import { Link, SimpleText } from '../src/types';
+import { logger } from '@vendetta';
 
 let patches = []
 
@@ -51,18 +52,23 @@ const patch = before("openLazy", ActionSheet, (ctx) => {
 function showLinks(links: string) {
   const children = []
   let urlRegex = /https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()!@:%_\+.~#?&\/\/=]*)/gm
-  let data = links
 
   let result: RegExpExecArray 
   let index = 0
-  while (result = urlRegex.exec(data)) {
+  while (result = urlRegex.exec(links)) {
     children.push(
-      <SimpleText>{data.slice(index, result.index)}</SimpleText>
+      <SimpleText>{links.slice(index, result.index)}</SimpleText>
     )
     children.push(
       <Link text={result?.[0]}></Link>
     )
     index = urlRegex.lastIndex
+  }
+
+  if (index==0) {
+    children.push(
+        <SimpleText>{links}</SimpleText>
+    )
   }
 
   showConfirmationAlert({
@@ -71,7 +77,7 @@ function showLinks(links: string) {
     children: (
       <ScrollView
         style={{
-          marginVertical: 12,
+          marginVertical: 5,
           maxHeight: ReactNative.Dimensions.get("window").height * 0.7,
         }}>
         <Text
