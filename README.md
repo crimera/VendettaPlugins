@@ -5,3 +5,5 @@ This repo contains a template for creating [Vendetta](https://github.com/vendett
 Paste a plugin URL into the Plugins page of Vendetta, following a basic format of:
 
 https://`YOUR_GITHUB_USERNAME`.github.io/`REPO_NAME`/`PLUGIN_NAME`
+
+# [Stash](https://crimera.github.io/VendettaPlugins/stash/)
